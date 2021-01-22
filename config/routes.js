@@ -1,3 +1,7 @@
+const parseString = require("xml2js").parseString;
+const stripPrefix = require("xml2js").processors.stripPrefix;
+const decoder = require('saml-encoder-decoder-js');
+const  Saml2js = require('saml2js');
 
 module.exports = function (app, config, passport) {
 
@@ -30,6 +34,33 @@ module.exports = function (app, config, passport) {
         failureFlash: true
       }),
     function (req, res) {
+      var samlResponse = req.body.SAMLResponse;
+      var parser = new Saml2js(samlResponse);
+      var parsedObject = parser.toObject();
+      console.log(parsedObject);
+      // Decode response
+      //var xml = new Buffer(samlResponse, 'base64').toString('ascii');
+      decoder.decodeSamlPost(samlResponse, (err, xmlResponse) => {
+        if (err) {
+          throw new Error(err);
+        } else {
+          parseString(xmlResponse, { tagNameProcessors: [stripPrefix] }, function (err, result) {
+            if (err) {
+              throw err;
+            } else {
+
+              //sign token
+              //token = JWT.sign({ id: nameID }, keyConfig.secretKey, {
+             //   expiresIn: '24h' //other configuration options
+             // });
+              console.log(result);
+
+            }
+          });
+        }
+      })
+
+      //console.log(xml)
       res.redirect('/');
     }
   );

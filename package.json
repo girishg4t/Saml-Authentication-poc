@@ -36,7 +36,10 @@
     "morgan": "1.7.0",
     "nodemon": "1.9.2",
     "passport": "0.3.2",
-    "passport-saml": "0.15.0"
+    "passport-saml": "0.15.0",
+    "saml-encoder-decoder-js": "^1.0.1",
+    "saml2js": "^0.1.2",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "bower": "1.7.9"
